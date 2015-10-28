@@ -1,4 +1,8 @@
 # References
 
 
-https://docs.google.com/presentation/d/1PoiCrUHN2pGDK2oodilAdZYpxCyac0Nuc0xuzYyeqIk/edit?usp=sharing
+##Maven Tutorial
+http://books.sonatype.com/mvnex-book/reference/index.html
+
+##maven Open repo from Sonatype
+https://repository.sonatype.org/#welcome
