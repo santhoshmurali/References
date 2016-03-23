@@ -1,0 +1,217 @@
+CentOS 7 Installation - 32 bit
+for DVD : http://mirror.centos.org/altarch/7/isos/i386/CentOS-7-i386-DVD-1511.iso 
+Follow the on screen instrucitons
+
+CentOS 7 Installation - 32 bit
+everything :http://mirror.centos.org/altarch/7/isos/i386/CentOS-7-i386-Everything-1511.iso
+
+1. in VM Box, Install CentOS 7 for 32 bit
+2. Start the OS
+3. you will find that it goes to Command Prompt instead of GUI.
+4. To start GUI, we have to either install GNOME or KDE. 
+5. Lets make sure if the network is enebaled before confiuring yum.
+----------------------------------------------------------
+> nmcli -d
+DEVICE	TYPE		STATE			CONNECTION
+enp0xx	ethernet	disconnected	--
+lo		loopcheck	unmanaged		--
+-----------------------------------------------------------
+
+6.Get into network confing ui mode
+-----------------------------------------------------------
+> nmtui
+
+	--> Edit a connection [select]
+		--> enp0xx [select]
+			--> <Edit...> [select]
+			--Edit Connection--
+				-->=IPv4 CONFIGURATION <Automatic> [Select]
+				--> Automatically connect [Check]
+				--> <Ok> [Check]
+			-->Quit [Select]
+
+> systemctl restart network
+> nmcli -d
+DEVICE	TYPE		STATE			CONNECTION
+enp0xx	ethernet	connected		--
+lo		loopcheck	unmanaged		-- 
+-----------------------------------------------------------
+
+7. curl http://mirror.centos.org [this should resolve the url else, refer the url http://www.krizna.com/centos/setup-network-centos-7/]
+------------------------------------------------
+
+8. cp /etc/yum.conf /etc/yum.conf.backup
+9. vi /etc/yum.conf
+
+--------------------------------------------------------------
+press --Insert--
+add the lines to the exisitng yum.conf incase of any lines missing from the below  values
+
+[main]
+cachedir=/var/cache/yum/7/i386
+keepcache=1
+reposdir=/etc/yum.repos.d
+debuglevel=2
+logfile=/var/log/yum.log
+exactarch=1
+obsoletes=1
+plugins=1
+installonly_limit=5
+distroverpkg=centos-release
+
+
+[base]
+name=CentOS-7-Base
+baseurl=http://mirror.centos.org/altarch/7/os/i386/
+gpgcheck=0
+#gpgkey=http://mirror.centos.org/altarch/7/os/i386/RPM-GPG-KEY-CentOS-7
+#protect=1
+
+#released updates 
+[update]
+name=CentOS-7 - Updates
+baseurl=http://mirror.centos.org/altarch/7/updates/i386/
+gpgcheck=0
+#gpgkey=http://mirror.centos.org/altarch/7/os/i386/RPM-GPG-KEY-CentOS-7
+#protect=1
+
+#additional packages that may be useful
+[extras]
+name=CentOS-7-Extras
+baseurl=http://mirror.centos.org/altarch/7/extras/i386/
+gpgcheck=0
+#gpgkey=http://mirror.centos.org/altarch/7/os/i386/RPM-GPG-KEY-CentOS-7
+#protect=1
+
+#additional packages that extend functionality of existing packages
+[centosplus]
+name=CentOS-7-Plus
+baseurl=http://mirror.centos.org/altarch/7/centosplus/i386/
+gpgcheck=0
+#gpgkey=http://mirror.centos.org/altarch/7/os/i386/RPM-GPG-KEY-CentOS-7
+#protect=1
+
+#contrib - packages by Centos Users
+[contrib]
+name=CentOS-7- Contrib
+baseurl=http://mirror.centos.org/altarch/7/cr/i386/
+gpgcheck=0
+#gpgkey=http://mirror.centos.org/altarch/7/os/i386/RPM-GPG-KEY-CentOS-7
+#protect=1
+
+------------------------------------------------
+
+
+10. Now we need to install gnome. [refer : http://unix.stackexchange.com/questions/181503/how-to-install-desktop-environments-on-centos-7]
+11. yum -y groups install "GNOME Desktop"
+12. startx
+13. Select System language first.
+14. Select your keyboard type.
+15. Add online accounts if you'd like to.
+16. Finally click "Start using CentOS Linux"
+17. go to terminal and type follows
+------------------------------------------------
+> echo "exec gnome-session" >> ~/.xinitrc
+------------------------------------------------
+18. Re-boot
+19. if the GUI did not load by default the type "startx" agian
+20. Then open the terminal and type following commands
+-------------------------------------------------
+> sudo systemctl set-default "graphical.target"
+> reboot
+-------------------------------------------------
+21. Accept the terms and Finish.
+
+
+
+-----------------------------------------------------------
+********** Install Java 8 *********************************
+ref : http://tecadmin.net/install-java-8-on-centos-rhel-and-fedora/#
+-----------------------------------------------------------
+1. Open Terminal
+2. Type following terminal
+-------------------------------------------------
+> cd /opt/
+> sudo wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" "http://download.oracle.com/otn-pub/java/jdk/8u72-b15/jdk-8u72-linux-i586.tar.gz"
+> sudo tar xzf jdk-8u72-linux-i586.tar.gz
+> sudo mv jdk1.8.0_72 jdk
+> cd /opt/jdk
+> sudo alternatives --install /usr/bin/java java /opt/jdk/bin/java 2
+> sudo alternatives --config java
+# select the versio which shows as "/opt/jdk/bin/java"
+> sudo alternatives --install /usr/bin/jar jar /opt/jdk/bin/jar 2
+> sudo alternatives --install /usr/bin/javac javac /opt/jdk/bin/javac 2
+> sudo alternatives --set jar /opt/jdk/bin/jar
+> sudo alternatives --set javac /opt/jdk/bin/javac
+
+# Check the installed version
+> java -version
+java version "1.8.0_72"
+Java(TM) SE Runtime Environment (build 1.8.0_72-b15)
+Java HotSpot(TM) 64-Bit Server VM (build 25.72-b15, mixed mode)
+
+#Configuring Environment Variables
+> sudo vi ~/.bashrc
+// in vi enter the following
+<Insert>
+export JAVA_HOME=/opt/jdk
+export JRE_HOME=/opt/jdk/jre
+export PATH=$PATH:/opt/jdk/bin:/opt/jdk/jre/bin
+<Shift>wq<enter>
+
+> source ~/.bashrc
+
+-------------------------------------------------
+
+-----------------------------------------------------------
+********** Install Hadoop *********************************
+-----------------------------------------------------------
+1. Open the Terminal
+> su root
+password : ****
+> adduser hduser sudo
+> passwd hduser
+****
+exit
+> su hduser
+> sudo addgroup hadoop
+> sudo usermod -a -G hadoop hduser
+> ssh-keygen -t rsa -P ""
+> cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+> chmod 600 ~/.ssh/authorized_keys
+> cd
+> mkdir installs
+> cd installs
+> wget a.mbbsindia.com/hadoop/common/hadoop-2.x.x/hadoop-2.x.x.tar.gz
+> tar xvzf hadoop-2.x.x.tar.gz
+> sudo mv hadoop-2.x.x /usr/local/hadoop
+> sudo chown -R hduser:hadoop /usr/local/hadoop
+> sudo vi ~/.bashrc
+// in vi enter the following
+<Insert>
+export JAVA_HOME=/opt/jdk
+export JRE_HOME=/opt/jdk/jre
+export PATH=$PATH:/opt/jdk/bin:/opt/jdk/jre/bin
+# Haddop env
+export HADOOP_PREFIX=/usr/local/hadoop
+export HADOOP_HOME=/usr/local/hadoop
+export HADOOP_MAPRED_HOME=${HADOOP_HOME}
+export HADOOP_COMMON_HOME=${HADOOP_HOME}
+export HADOOP_HDFS_HOME=${HADOOP_HOME}
+export YARN_HOME=${HADOOP_HOME}
+export HADOOP_CONF_DIR=${HADOOP_HOME}/etc/hadoop
+# Native Path
+export HADOOP_COMMON_LIB_NATIVE_DIR=${HADOOP_PREFIX}/lib/native
+export HADOOP_OPTS="-Djava.library.path=$HADOOP_PREFIX/lib"
+#Java path
+export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk-1.7.0.85.x86_64
+# Add Hadoop bin/ directory to PATH
+export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin
+
+<Shift>wq<enter>
+
+> source ~/.bashrc
+
+
+
+
