@@ -22,3 +22,6 @@ http://www.analyticsvidhya.com/blog/2015/07/big-data-analytics-youtube-ted-resou
 ##Python
 ftp://ftp.micronet-rostov.ru/linux-support/books/programming/Python/[Manning]%20-%20The%20Quick%20%20Python%20Book,%202nd%20ed.%20-%20[Ceder]%20(2010)/[Manning]%20-%20The%20Quick.%20Python%20Book,%202nd%20ed.%20-%20[Ceder]%20(2010).pdf
 
+
+## CRISP-DM
+www3.cs.stonybrook.edu/~cse634/students'_presentations/crisp.ppt
