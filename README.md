@@ -25,3 +25,21 @@ ftp://ftp.micronet-rostov.ru/linux-support/books/programming/Python/[Manning]%20
 
 ## CRISP-DM
 www3.cs.stonybrook.edu/~cse634/students'_presentations/crisp.ppt
+
+
+Notes for CART
+Classification Technique that comes after clustering. 
+Supervised Technique.
+Root node, Intermediate nodes and Terminal Nodes
+Tap on the identifying maximum propensity
+
+How do I find the importance of Parameter Hierarchy? Choosing the splitting criterion. Impacted by Skewed samples.
+
+Impurity based criteria
+
+split way
+	binary/multiway split
+
+Finding the right sized tree
+	- pre-purning
+	- post-pruning
