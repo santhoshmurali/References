@@ -1,3 +1,9 @@
 Everything about weights
 https://towardsdatascience.com/weight-initialization-in-neural-networks-a-journey-from-the-basics-to-kaiming-954fb9b47c79
 https://stackoverflow.com/questions/49433936/how-to-initialize-weights-in-pytorch
+
+LSTM
+https://towardsdatascience.com/illustrated-guide-to-lstms-and-gru-s-a-step-by-step-explanation-44e9eb85bf21
+LSTM_Sample_Pytorch
+https://blog.floydhub.com/long-short-term-memory-from-zero-to-hero-with-pytorch/
+http://d2l.ai/chapter_recurrent-neural-networks/lstm.html
